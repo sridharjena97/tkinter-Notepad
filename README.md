@@ -17,7 +17,7 @@ This is developed for demo and educational purpose. Contact below for any querry
 Need to install python >=3.7
 
 Install the dependencies and devDependencies and start the application.
-execute notepad.pyw to get started.
+execute notepad.pyw to get started...
 
 ```sh
 $ sudo apt install python3
