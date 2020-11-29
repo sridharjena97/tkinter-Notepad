@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfilename,asksaveasfilename
-import os
+import os,time
 class GUI(Tk):
     def __init__(self):
         super().__init__()
@@ -14,12 +14,14 @@ class GUI(Tk):
         self.status.set("Ready")
         self.sbar=Label(self,textvariable=self.status,relief=SUNKEN,anchor="w")
         self.sbar.pack(side=BOTTOM,fill=X)
-    def update_status(self,state="Ready"):
+    def update_status(self,state="Ready",freeze=0):
         '''
         To update status of GUI
         '''
         self.status.set(state)
         self.sbar.update()
+        if freeze>0:
+            time.sleep(freeze)
     def create_button(self,master=None,btntxt="Button",bg="sky blue",relief=RAISED,bd=6,funcname=None,side=None,padx=3,pady=3,anchor=None,ipadx=10,ipady=None,**kwargs):
         '''
         To Create a button
@@ -49,6 +51,7 @@ def openfile():
         
 def save():
     global file
+    window.update_status(state="Saving...")
     if file==None:
         file=asksaveasfilename(initialfile="Untitled.txt",defaultextension=".txt",filetypes=[("All Files","*.*"),("Text Documents","*.txt")])
         if file=="":
@@ -58,17 +61,25 @@ def save():
             with open(file,"w") as f:
                 f.write(textarea.get(1.0,END))
                 window.title(os.path.basename(file)+" - Notepad")
+                window.update_status(state="saved",freeze=2)
+                window.update_status()
     else:
         # save the file
+        window.update_status(state="Saving...")
         with open(file,"w") as f:
                 f.write(textarea.get(1.0,END))
                 window.title(os.path.basename(file)+" - Notepad")
+                window.update_status(state="saved",freeze=2)
+                window.update_status()
 
 def saveas():
+    window.update_status(state="Saving...")
     file=asksaveasfilename(initialfile="Untitled.txt",defaultextension=".txt",filetypes=[("All Files","*.*"),("Text Documents","*.txt")])
     with open(file,"w") as f:
         f.write(textarea.get(1.0,END))
-    window.title(os.path.basename(file)+" - Notepad") 
+    window.title(os.path.basename(file)+" - Notepad")
+    window.update_status(state="saved",freeze=2)
+    window.update_status()
 def exit():
     window.destroy()
 def copy():
@@ -91,7 +102,7 @@ font1="Lucida 22 bold"
 font2="Arial 12 normal"
 if __name__ == "__main__":
     window=GUI()
-    # window.statusbar()
+    window.statusbar()
     # window title
     window.title("*Untitled - Notepad")
     # Setting icon of the app
@@ -119,9 +130,12 @@ if __name__ == "__main__":
     mainmenu.add_cascade(label="Help",menu=helpmenu)
     # Configuring mainmenu
     window.config(menu=mainmenu)
+    # scroll bar
     scroll= Scrollbar(window)
     scroll.pack(fill=Y,side=RIGHT,anchor="ne")
+    # Creating Text area for text entery
     textarea=Text(window,font=font2,yscrollcommand=scroll.set)
+    # creating varible for storing file name
     file=None
     textarea.pack(fill=BOTH,expand=True,padx=3)
     scroll.config(command=textarea.yview)
@@ -130,6 +144,7 @@ if __name__ == "__main__":
     popmenu.add_command(label="Cut",command=cut)
     popmenu.add_command(label="Copy",command=copy)
     popmenu.add_command(label="Paste",command=paste)
+    # binding right click menu to text area on event of right click
     textarea.bind("<Button-3>",optionsMenu)
 
     window.mainloop()
