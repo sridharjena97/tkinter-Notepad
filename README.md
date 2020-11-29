@@ -12,6 +12,7 @@ This is developed for demo and educational purpose. Contact below for any querry
 
   - Initial Commit
   - Options added on right click
+  - Added Status Bar
 
 ### Installation
 
