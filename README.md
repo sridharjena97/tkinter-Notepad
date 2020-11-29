@@ -11,6 +11,7 @@ This is developed for demo and educational purpose. Contact below for any querry
 # New Features!
 
   - Initial Commit
+  - Options added on right click
 
 ### Installation
 

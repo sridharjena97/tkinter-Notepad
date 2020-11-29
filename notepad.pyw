@@ -79,6 +79,11 @@ def cut():
     textarea.event_generate(("<<Cut>>"))
 def about():
     showinfo("About","Notepad V-1.0 Developed by: Sridhar Jena ©SRIDHWORK-2020") 
+def optionsMenu(event):
+    try:
+        popmenu.tk_popup(event.x_root,event.y_root)
+    finally:
+        popmenu.grab_release()
     
 # Fonts
 dfont="Consolas 40 bold"
@@ -120,6 +125,11 @@ if __name__ == "__main__":
     file=None
     textarea.pack(fill=BOTH,expand=True,padx=3)
     scroll.config(command=textarea.yview)
-
+    # right click menu
+    popmenu=Menu(window,tearoff=0)
+    popmenu.add_command(label="Cut",command=cut)
+    popmenu.add_command(label="Copy",command=copy)
+    popmenu.add_command(label="Paste",command=paste)
+    textarea.bind("<Button-3>",optionsMenu)
 
     window.mainloop()
